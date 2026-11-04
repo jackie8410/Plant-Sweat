@@ -1,0 +1,7 @@
+const {test}=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const source=fs.readFileSync(path.resolve(__dirname,'../minigame/game.js'),'utf8');
+for(const [width,height]of [[375,667],[390,844],[320,568],[768,1024]])test(`wechat Canvas boot and navigation ${width}x${height}`,()=>{let touch;const texts=[],map=new Map(),calls=[];const ctx=new Proxy({fillText:(...args)=>texts.push(args),measureText:t=>({width:t.length*12})},{get:(o,p)=>p in o?o[p]:(...args)=>calls.push([p,...args]),set:(o,p,v)=>(o[p]=v,true)});const wx={getWindowInfo:()=>({windowWidth:width,windowHeight:height,pixelRatio:2,safeArea:{top:20,bottom:height-15}}),createCanvas:()=>({getContext:()=>ctx}),getStorageSync:k=>map.get(k),setStorageSync:(k,v)=>map.set(k,v),onTouchEnd:fn=>touch=fn,onHide(){},onShow(){}};vm.runInNewContext(source,{require:id=>require(path.resolve(__dirname,'../minigame',id)),wx,console,setInterval(){},Date,Math});assert(texts.some(t=>t[0]==='欢迎来到种毛衣'));const tap=(x,y)=>touch({changedTouches:[{clientX:x*width/375,clientY:y*width/375}]});const h=height*375/width,bottom=Math.max(12,15*375/width);tap(315,(h-(115+6*21+41))/2+25); // Close welcome using its visible close control.
+// Bottom navigation uses the same scaled coordinates on every screen.
+for(let i=0;i<5;i++)tap(40+i*73,h-bottom-32);
+assert(map.has('zmy_save'));assert(calls.length>0);assert(texts.some(t=>t[0]==='每日小确幸'));
+});

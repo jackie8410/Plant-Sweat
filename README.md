@@ -6,6 +6,12 @@
 
 在此目录运行 `npm start`，打开 http://127.0.0.1:4173 。Node.js 18 或以上；无需安装第三方依赖。网站源文件和静态发布内容在 `dist/`。
 
+## 网站部署
+
+正式访问地址：[learnforeverything.com](https://learnforeverything.com/)。网站由 GitHub Pages 托管，仓库为公开的 [jackie8410/Plant-Sweat](https://github.com/jackie8410/Plant-Sweat)。`.github/workflows/pages.yml` 在 `main` 更新或手动触发时执行构建、配置验证及游戏测试，通过后只发布 `dist/`。
+
+仓库 Settings → Pages 使用 GitHub Actions，Custom domain 为 `learnforeverything.com`，并启用 Enforce HTTPS。域名绑定保存在 Pages 设置中，Actions 部署不依赖 `CNAME` 文件。原 Sites 地址与新域名分别保存浏览器存档；如需迁移进度，在旧站设置中导出存档，再到新站导入。
+
 ## 打开微信小游戏
 
 微信开发者工具中选择小游戏，导入 `minigame/`。工程使用 `touristappid` 作为开发占位；正式预览、上传和提审前，在 `minigame/project.config.json` 配置自己的小游戏 AppID。此项目是微信小游戏，不是普通 WXML 小程序，也不是网页套壳。
@@ -35,7 +41,7 @@ P2 的邻居订单和节日限定尚未实现；图样目前为基础与田园�
 
 发行者需配置 AppID、核实平台最新资质要求、完成名称及美术权利核查、填写运营方及联系方式、完善正式协议、完成微信真机测试与平台审核。没有凭证时不代填账号信息，也不声称已经发布到微信。
 
-网站托管身份保存在 `.openai/hosting.json`；保持其中项目 ID 不变，复用该项目发布后续版本。
+原 Sites 预览站的托管身份保存在 `.openai/hosting.json`；保留其中项目 ID，供继续维护该预览站时使用。正式域名的更新通过上面的 GitHub Pages 工作流发布。
 
 ## 工程结构
 
